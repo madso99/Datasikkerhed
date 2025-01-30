@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="text" id="key" placeholder="Indtast nøgle" />
+    <input type="text" id="cleartext" placeholder="Indtast tekst" />
+    <button onclick="encryptText()">Kryptér</button>
+    <p><strong>Krypteret tekst:</strong> <span id="ciphertext"></span></p>
+
+    <button onclick="decryptText()">Dekryptér</button>
+    <p><strong>Dekrypteret tekst:</strong> <span id="plaintext"></span></p>
+
+    <script>
+      function vigenereCipher(key, text, decrypt = false) {
+        if (!key || !text)
+          throw new Error("Key and text must be non-empty strings");
+
+        let result = "",
+          j = 0;
+        key = key.toUpperCase();
+
+        for (let i = 0; i < text.length; i++) {
+          let charCode = text.charCodeAt(i);
+          let isLowerCase = charCode >= 97 && charCode <= 122;
+          let isUpperCase = charCode >= 65 && charCode <= 90;
+
+          if (isLowerCase || isUpperCase) {
+            let base = isLowerCase ? 97 : 65;
+            let shift = key.charCodeAt(j % key.length) - 65;
+            shift = decrypt ? -shift : shift;
+            result += String.fromCharCode(
+              ((charCode - base + shift + 26) % 26) + base
+            );
+            j++;
+          } else {
+            result += text[i];
+          }
+        }
+        return result;
+      }
+
+      const vigE = (key, cleartext) => vigenereCipher(key, cleartext);
+      const vigD = (key, ciphertext) => vigenereCipher(key, ciphertext, true);
+
+      function encryptText() {
+        const key = document.getElementById("key").value;
+        const cleartext = document.getElementById("cleartext").value;
+        const ciphertext = vigE(key, cleartext);
+        document.getElementById("ciphertext").innerText = ciphertext;
+      }
+
+      function decryptText() {
+        const key = document.getElementById("key").value;
+        const ciphertext = document.getElementById("ciphertext").innerText;
+        const plaintext = vigD(key, ciphertext);
+        document.getElementById("plaintext").innerText = plaintext;
+      }
+    </script>
+  </body>
+</html>

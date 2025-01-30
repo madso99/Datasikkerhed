@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function caesarE(key, cleartext) {
+        let cipherText = "";
+        for (let i = 0; i < cleartext.length; i++) {
+          const char = cleartext[i];
+
+          if (char >= "A" && char <= "Z") {
+            cipherText += String.fromCharCode(
+              ((char.charCodeAt(0) - 65 + key) % 26) + 65
+            );
+          } else if (char >= "a" && char <= "z") {
+            cipherText += String.fromCharCode(
+              ((char.charCodeAt(0) - 97 + key) % 26) + 97
+            );
+          } else {
+            // Hvis det ikke er et bogstav, tilføj det uændret
+            cipherText += char;
+          }
+        }
+
+        return cipherText;
+      }
+
+      // Eksempel på brug:
+      const key = 7;
+      const cleartext =
+        "Hej med dig, mit navn er Anders og jeg kan godt lide dig";
+      const encrypted = caesarE(key, cleartext);
+
+      console.log("Encrypted text:", encrypted);
+    </script>
+  </body>
+</html>
