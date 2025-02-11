@@ -1,7 +1,7 @@
 "use strict";
 const sqlite3 = require("sqlite3").verbose();
 const bcrypt = require("bcrypt"); // Til hashing af adgangskoder
-const Rockyou = require("./Rockyou.js.js");
+const Rockyou = require("./rockyou.js");
 
 const SALT_ROUNDS = 10; // Antal hashing-runder
 
